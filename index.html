@@ -1,0 +1,256 @@
+<!doctype html>
+<html>
+<head>
+  <title>William's 3D Map</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    #map {
+      height: 100%;
+    }
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .ui-button {
+      background-color: #fff;
+      border: 0;
+      border-radius: 2px;
+      box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+      margin: 10px;
+      padding: 0 0.5em;
+      font: 400 18px Roboto, Arial, sans-serif;
+      overflow: hidden;
+      height: 40px;
+      cursor: pointer;
+    }
+    .ui-button:hover {
+      background: rgb(235, 235, 235);
+    }
+
+
+  </style>
+  <script>
+    async function initMap() {
+      const { Map, InfoWindow } = await google.maps.importLibrary("maps");
+      const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary(
+        "marker",
+      );
+      const map = new Map(document.getElementById("map"), {
+        center: {
+          lat: 25.0343,
+          lng: -77.3963,
+        },
+        zoom: 8,
+        heading: 320,
+        tilt: 47.5,
+        mapId: "90f87356969d889c",
+      });
+      const buttons = [
+        ["Rotate Left", "rotate", 20, google.maps.ControlPosition.LEFT_CENTER],
+        ["Rotate Right", "rotate", -20, google.maps.ControlPosition.RIGHT_CENTER],
+        ["Tilt Down", "tilt", 20, google.maps.ControlPosition.TOP_CENTER],
+        ["Tilt Up", "tilt", -20, google.maps.ControlPosition.BOTTOM_CENTER],
+      ];
+
+      buttons.forEach(([text, mode, amount, position]) => {
+        const controlDiv = document.createElement("div");
+        const controlUI = document.createElement("button");
+
+        controlUI.classList.add("ui-button");
+        controlUI.innerText = `${text}`;
+        controlUI.addEventListener("click", () => {
+          adjustMap(mode, amount);
+        });
+        controlDiv.appendChild(controlUI);
+        map.controls[position].push(controlDiv);
+      });
+
+      const adjustMap = function (mode, amount) {
+        switch (mode) {
+          case "tilt":
+            map.setTilt(map.getTilt() + amount);
+            break;
+          case "rotate":
+            map.setHeading(map.getHeading() + amount);
+            break;
+          default:
+            break;
+        }
+      };
+
+      const islands = [
+        {
+          "title": "New Providence",
+          "description": "<span class='font-bold'>Capital:</span> Nassau<br><span class='font-bold'>Indigenous Feature:</span> The Bahama Parrot - A really colorful bird that's green and blue and super pretty.<br><span class='font-bold'>Fun Fact:</span> Home to the really cool Atlantis Resort.",
+          "position" : {lat: 25.0343, lng: -77.3963},
+        },
+        {
+          "title": "Grand Bahama",
+          "description": "<span class='font-bold'>Capital:</span> Freeport<br><span class='font-bold'>Indigenous Feature:</span> Bahama Swallow - A small bird that's blue and white and flies really fast.<br><span class='font-bold'>Fun Fact:</span> Has super long caves underwater.",
+          "position" : {lat: 26.6333, lng: -78.4167},
+        },
+        {
+          "title": "Eleuthera",
+          "description": "<span class='font-bold'>Capital:</span> Governor's Harbour<br><span class='font-bold'>Indigenous Feature:</span> Eleuthera Pineapple - It's really sweet and smaller than other pineapples.<br><span class='font-bold'>Fun Fact:</span> Has amazing pink sand beaches.",
+          "position" : {lat: 25.0343, lng: -76.1352},
+        },
+        {
+          "title": "Abaco",
+          "description": "<span class='font-bold'>Capital:</span> Marsh Harbour<br><span class='font-bold'>Indigenous Feature:</span> Abaco Parrot - A bright green bird with a cool white spot on its head.<br><span class='font-bold'>Fun Fact:</span> Known for its old lighthouses, like the one in Hope Town.",
+          "position" : {lat: 26.3583, lng: -77.1586},
+        },
+        {
+          "title": "Andros",
+          "description": "<span class='font-bold'>Capital:</span> Andros Town<br><span class='font-bold'>Indigenous Feature:</span> Andros Rock Iguana - A big lizard with lots of colors, found only on Andros.<br><span class='font-bold'>Fun Fact:</span> Has the world's third-biggest barrier reef.",
+          "position" : {lat: 24.7, lng: -77.7667},
+        },
+        {
+          "title": "Cat Island",
+          "description": "<span class='font-bold'>Capital:</span> Arthur's Town<br><span class='font-bold'>Indigenous Feature:</span> Bahamian Land Crab - These crabs are really tasty and famous on Cat Island.<br><span class='font-bold'>Fun Fact:</span> Has the tallest hill in the Bahamas, Mount Alvernia.",
+          "position" : {lat: 24.2137, lng: -75.3667},
+        },
+        {
+          "title": "Long Island",
+          "description": "<span class='font-bold'>Capital:</span> Clarence Town<br><span class='font-bold'>Indigenous Feature:</span> Long Island Duck - A special kind of duck that's different from others.<br><span class='font-bold'>Fun Fact:</span> Has Dean's Blue Hole, one of the deepest in the world.",
+          "position" : {lat: 23.1761, lng: -75.0936},
+        },
+        {
+          "title": "Exuma",
+          "description": "<span class='font-bold'>Capital:</span> George Town<br><span class='font-bold'>Indigenous Feature:</span> Swimming Pigs of Exuma - Cute pigs that swim in the sea, which is really funny!<br><span class='font-bold'>Fun Fact:</span> Has a huge protected area in the sea with lots of fish and corals.",
+          "position" : {lat: 23.5333, lng: -75.8333},
+        },
+        {
+          "title": "Bimini",
+          "description": "<span class='font-bold'>Capital:</span> Alice Town<br><span class='font-bold'>Indigenous Feature:</span> Bimini Boa - A small snake that's not dangerous and lives only in Bimini.<br><span class='font-bold'>Fun Fact:</span> It's the best place in the Bahamas for catching big fish like marlins.",
+          "position" : {lat: 25.7269, lng: -79.2912},
+        },
+        {
+          "title": "Acklins",
+          "description": "<span class='font-bold'>Capital:</span> Snug Corner<br><span class='font-bold'>Indigenous Feature:</span> Bonefish - These are really fast fish that are super fun to catch.<br><span class='font-bold'>Fun Fact:</span> Acklins is part of a bigger group of islands and has lots of cool beaches.",
+          "position" : {lat: 22.3656, lng: -73.9935},
+        },
+        {
+          "title": "Crooked Island",
+          "description": "<span class='font-bold'>Capital:</span> Colonel Hill<br><span class='font-bold'>Indigenous Feature:</span> Crooked Island Lobster - They're special lobsters that live around this island and are really yummy.<br><span class='font-bold'>Fun Fact:</span> The island is shaped funny and has awesome places for swimming.",
+          "position" : {lat: 22.6292, lng: -74.0152},
+        },
+        {
+          "title": "Mayaguana",
+          "description": "<span class='font-bold'>Capital:</span> Abraham's Bay<br><span class='font-bold'>Indigenous Feature:</span> Mayaguana Iguana - A unique lizard that you can only find on this island.<br><span class='font-bold'>Fun Fact:</span> It's the least developed island in the Bahamas, which means it's super natural and wild.",
+          "position" : {lat: 22.3794, lng: -72.955},
+        },
+        {
+          "title": "Inagua",
+          "description": "<span class='font-bold'>Capital:</span> Matthew Town<br><span class='font-bold'>Indigenous Feature:</span> West Indian Flamingo - Lots of pink flamingos live here and they look so cool.<br><span class='font-bold'>Fun Fact:</span> The biggest saltworks in the Western Hemisphere is here.",
+          "position" : {lat: 21.0595, lng: -73.3238},
+        },
+        {
+          "title": "San Salvador",
+          "description": "<span class='font-bold'>Capital:</span> Cockburn Town<br><span class='font-bold'>Indigenous Feature:</span> San Salvador Rock Iguana - A rare type of iguana that's only found here.<br><span class='font-bold'>Fun Fact:</span> Christopher Columbus first landed in the New World on this island.",
+          "position" : {lat: 24.0694, lng: -74.491},
+        },
+        {
+          "title": "Harbour Island",
+          "description": "<span class='font-bold'>Capital:</span> Dunmore Town<br><span class='font-bold'>Indigenous Feature:</span> Harbour Island Chicken - A special chicken dish that's really tasty.<br><span class='font-bold'>Fun Fact:</span> This island has pink sand beaches which are super pretty.",
+          "position" : {lat: 25.5, lng: -76.6341},
+        },
+        {
+          "title": "Berry Islands",
+          "description": "<span class='font-bold'>Capital:</span> Bullocks Harbour<br><span class='font-bold'>Indigenous Feature:</span> Spiny Lobster - These are lobsters with long, spiky antennas and no claws, and they're really good to eat.<br><span class='font-bold'>Fun Fact:</span> The Berry Islands are a group of about 30 small islands and they're famous for having more fish than people living there! It's like a big adventure playground for fishing and exploring.",
+          "position" : {lat: 25.7086, lng: -77.8403},
+        },
+        {
+          "title": "Ragged Island",
+          "description": "<span class='font-bold'>Capital:</span> Duncan Town<br><span class='font-bold'>Indigenous Feature:</span> Ragged Island Snapper - A type of fish that's really popular and delicious.<br><span class='font-bold'>Fun Fact:</span> It's a quiet place perfect for relaxing and fishing, with lots of sunshine.",
+          "position" : {lat: 22.1908, lng: -75.7295},
+        }
+      ];
+
+      // Create an info window to share between markers.
+      const infoWindow = new InfoWindow();
+
+
+      // Create the markers.
+      islands.forEach(({ position, title, description }, i) => {
+        const pin = new PinElement({
+          glyph: `${i + 1}`,
+        });
+
+        // A marker with a with a URL pointing to a PNG.
+      const beachFlagImg = document.createElement("img");
+
+      beachFlagImg.src =
+        "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
+        const marker = new AdvancedMarkerElement({
+          position,
+          map,
+          title: `${i + 1}. ${title}`,
+          content: beachFlagImg,
+        });
+
+        const content = `<div class="text-xl mb-1">${title}</div><div>${description}</div>`;
+
+        // Add a click listener for each marker, and set up the info window.
+        marker.addListener("click", ({ domEvent, latLng }) => {
+          const { target } = domEvent;
+          infoWindow.close();
+          infoWindow.setContent(content);
+          infoWindow.open(marker.map, marker);
+        });
+      });
+
+    }
+
+    window.initMap = initMap;
+  </script>
+</head>
+<body>
+  <div class="h-screen bg-gray-400 flex items-center" style="background-image: url('./img/hero.jpg');">
+    <section class="bg-cover bg-center py-32 w-full" >
+      <div class="container mx-auto text-left text-white">
+        <div class="flex items-center">
+          <div class="w-1/2">
+            <h1 class="text-5xl font-medium mb-6 drop-shadow-md">Welcome to William's Map</h1>
+            <p class="text-xl mb-12">An outside the box presentation of a 3D Map using the Google Maps Javascript API</p>
+            <a href="#explore" class="bg-indigo-500 text-white py-4 px-12 rounded-full hover:bg-indigo-600">Explore</a>
+          </div>
+          <div class="w-1/2 pl-16">
+            <img src="./img/hero2.jpg" class="h-64 w-full object-cover rounded-xl" alt="Layout Image">
+        </div>
+          </div>
+        </div>
+    </section>
+  </div>
+  <div class="py-16 bg-white" id="explore">
+    <div class="container m-auto px-6 text-gray-600 md:px-12 xl:px-6">
+        <div class="space-y-6 md:space-y-0 md:flex md:gap-6 lg:items-center lg:gap-12">
+          <div class="lg:w-4/12">
+            <img src="./img/islands.jpg" alt="image" loading="lazy" width="" height="">
+          </div>
+          <div class="lg:w-7/12">
+            <h1 class="text-2xl text-gray-900 font-bold md:text-4xl">Grade 5 Social Studies - 3D Map Project</h1>
+            <h2 class="text-2xl text-gray-600 font-bold md:text-2xl">Presented by William Thronebury</h2>
+            <h3 class="italic text-gray-400">Genesis Academy - Ms. Peet</h3>
+            <p class="mt-6 text-gray-600">William and his father embarked on an ambitious journey to bring the captivating archipelago of the Bahamas to life, not through the traditional medium of a physical map, but by harnessing the power of digital technology. Recognizing the dynamic and interactive potential of the Google Maps JavaScript API, we decided to craft a custom-coded, 3D map of the Bahamas Islands. </p>
+            <p class="mt-4 text-gray-600">This choice was driven by a desire to push the boundaries of conventional school projects, engaging with an "outside the box" idea that not only offers a visually stunning representation of the islands but also allows users to interact with the map in ways a physical model could never accommodate.</p>
+            <p class="mt-4 text-gray-600">This approach not only makes the learning experience more engaging for viewers but also educates them on the application of modern technology in geographical visualization and data presentation. For those interested in exploring the technical side of this project, the entire codebase used to create this map is available for review and inspiration at the following GitHub URL: [placeholder for GitHub URL].</p>
+            <p class="mt-4 text-gray-600"><span class="font-bold">How to use the map:</span> Each habital island is marked with a beach flag icon.  Click the flags to learn more about the island.  Traditional Google Maps controls are utilized (you can zoom, switch to satellite view etc.) but we've also added custom tilt and rotate buttons to the map to allow you to experience the space in a true 3D plane.  The more you zoom in, the more you can tilt the map.</p>
+          </div>
+        </div>
+    </div>
+  </div>
+  <div id="map"></div>
+  <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCCpU-GPIwrBiIuM-PuK4xP-fWIRif4ULo&callback=initMap&v=weekly"
+      defer
+    ></script>
+</body>
+</html>
