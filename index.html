@@ -54,8 +54,6 @@
         mapId: "90f87356969d889c",
       });
       const buttons = [
-        ["Rotate Left", "rotate", 20, google.maps.ControlPosition.LEFT_CENTER],
-        ["Rotate Right", "rotate", -20, google.maps.ControlPosition.RIGHT_CENTER],
         ["Tilt Down", "tilt", 20, google.maps.ControlPosition.TOP_CENTER],
         ["Tilt Up", "tilt", -20, google.maps.ControlPosition.BOTTOM_CENTER],
       ];
@@ -188,7 +186,7 @@
       const beachFlagImg = document.createElement("img");
 
       beachFlagImg.src =
-        "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
+        "./img/flag-icon.png";
         const marker = new AdvancedMarkerElement({
           position,
           map,
@@ -196,7 +194,7 @@
           content: beachFlagImg,
         });
 
-        const content = `<div class="text-xl mb-1">${title}</div><div>${description}</div>`;
+        const content = `<div class="text-xl mb-1">${title}</div><div><span class="font-bold">Coordinates</span>: Lat: ${position.lat}, Long: ${position.lng}</div><div>${description}</div>`;
 
         // Add a click listener for each marker, and set up the info window.
         marker.addListener("click", ({ domEvent, latLng }) => {
@@ -242,12 +240,20 @@
             <p class="mt-6 text-gray-600">William and his father embarked on an ambitious journey to bring the captivating archipelago of the Bahamas to life, not through the traditional medium of a physical map, but by harnessing the power of digital technology. Recognizing the dynamic and interactive potential of the Google Maps JavaScript API, we decided to craft a custom-coded, 3D map of the Bahamas Islands. </p>
             <p class="mt-4 text-gray-600">This choice was driven by a desire to push the boundaries of conventional school projects, engaging with an "outside the box" idea that not only offers a visually stunning representation of the islands but also allows users to interact with the map in ways a physical model could never accommodate.</p>
             <p class="mt-4 text-gray-600">This approach not only makes the learning experience more engaging for viewers but also educates them on the application of modern technology in geographical visualization and data presentation. For those interested in exploring the technical side of this project, the entire codebase used to create this map is available for review and inspiration at the following GitHub URL: <a class="underline text-indigo-600" href="https://github.com/bahamagician/william-map/tree/main">Click Here</a>.</p>
-            <p class="mt-4 text-gray-600"><span class="font-bold">How to use the map:</span> Each habital island is marked with a beach flag icon.  Click the flags to learn more about the island.  Traditional Google Maps controls are utilized (you can zoom, switch to satellite view etc.) but we've also added custom tilt and rotate buttons to the map to allow you to experience the space in a true 3D plane.  The more you zoom in, the more you can tilt the map.</p>
+            <p class="mt-4 text-gray-600"><span class="font-bold">How to use the map:</span> Each habital island is marked with a round Bahamian flag icon.  Click the flags to learn more about the island.  Traditional Google Maps controls are utilized (you can zoom, switch to satellite view etc.) but we've also added custom tilt buttons to the map to allow you to experience the space in a true 3D plane.  The more you zoom in, the more you can tilt the map.</p>
           </div>
         </div>
     </div>
   </div>
-  <div id="map"></div>
+  <div style="height:100%; position:relative">
+    <div class="absolute bg-white p-5 rounded-lg shadow-lg" style="right: 30px; top:70px; z-index:999">
+      <h2 class="text-lg font-bold text-center">William's Map of The Bahamas</h2>
+      <p class="flex"><img class="pr-1" src="./img/flag-icon.png"> Click on the flag icons to learn about the island</p>
+    </div>
+    <img src="./img/compass.png" style="position:absolute; left:20px; bottom:20px; z-index:9999; width:200px; height: auto;">
+
+    <div id="map"></div>
+  </div>
   <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCCpU-GPIwrBiIuM-PuK4xP-fWIRif4ULo&callback=initMap&v=weekly"
       defer
